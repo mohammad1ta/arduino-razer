@@ -14,7 +14,7 @@ int
   currentPointer = 0,
   ledFullMatrix[ numVertical + 1 ][ numVertical + 1 ];
 
-
+// Create matrix of LED's
 void createAddressableMatrix() {
   
   for ( int i = 1; i <= numVertical; i++ ) {
@@ -32,6 +32,7 @@ void createAddressableMatrix() {
   
 }
 
+// Get LEDs address of one loop square in array
 int *getSquare(int value) {
 
   const int maxLedCountsInSquare = numVertical + numHorizontal + ( numVertical - 2 ) + ( numHorizontal - 2 ) + 1; // 61 mishe;
@@ -87,6 +88,7 @@ void loop() {
 
 }
 
+// Handling light mode
 void razer() {
 
   int *circleList = getSquare(1);

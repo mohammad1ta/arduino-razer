@@ -2,6 +2,7 @@
 
 #define LED_COUNT 256
 #define LED_PIN D1
+#define numLED 60
 #define numVertical 16
 #define numHorizontal 16
 
@@ -93,7 +94,7 @@ void razer() {
 
   int *circleList = getSquare(1);
   
-  for (int a = 1; a <= 60; a++) {
+  for (int a = 1; a <= numLED; a++) {
 
     if ( a < 11 ) caseId = 1;
     else if ( a >= 11 && a < 21 ) caseId = 2;
@@ -141,8 +142,8 @@ void razer() {
 
     currentPointer = pointerId + a;
 
-    if ( currentPointer > 60 ) {
-      currentPointer = currentPointer - 60;
+    if ( currentPointer > numLED ) {
+      currentPointer = currentPointer - numLED;
     }
       
     strip.setPixelColor( circleList[currentPointer], r, g, b );
@@ -151,7 +152,7 @@ void razer() {
 
   pointerId++;
   
-  if ( pointerId == 60 ) 
+  if ( pointerId == numLED ) 
     pointerId = 0;
 
 }

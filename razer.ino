@@ -40,11 +40,7 @@ int *getSquare(int value) {
 
   static int resultAddress[ (int) maxLedCountsInSquare ];
 
-  int ledCounts = maxLedCountsInSquare - ( value * 4 - 4 );
-
-  int k = 17;
-  int m = 32;
-  int i, j;
+  int i, j, k = 17, m = 32;
   
   for( int a = 1; a <= maxLedCountsInSquare; a++ ) {
 

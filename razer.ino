@@ -36,27 +36,28 @@ void createAddressableMatrix() {
 // Get LEDs address of one loop square in array
 int *getSquare(int value) {
 
-  const int maxLedCountsInSquare = numVertical + numHorizontal + ( numVertical - 2 ) + ( numHorizontal - 2 ) + 1; // 61 mishe;
+  const int maxLedCountsInSquare = ( numVertical + numHorizontal ) * 2;
 
   static int resultAddress[ (int) maxLedCountsInSquare ];
 
-  int i, j, k = 17, m = 32;
+  int ledCounts = maxLedCountsInSquare;
+  int i, j, k = 16 + value, m = 33, everyLine = ledCounts / 4;
   
   for( int a = 1; a <= maxLedCountsInSquare; a++ ) {
 
-    if ( a <= 16 ) {
-      i = 1;
+    if ( a <= everyLine ) {
+      i = value;
       j = a;
-    } else if ( a > 16 && a <= 31 ) {
-      i = a - 15;
-      j = 16;
-    } else if ( a > 31 && a <= 46 ) {
+    } else if ( a <= ( everyLine * 2 ) ) {
+      i = a - ( 16 );
+      j = 16 - ( value - 1 );
+    } else if ( a <= everyLine * 3 ) {
       i = 16;
       j = a - k;
       k = k + 2;
-    } else {
+    } else if ( a <= everyLine * 4 ) {
       i = a - m;
-      j = 1;
+      j = 1;  
       m = m + 2;
     }
     
@@ -86,49 +87,53 @@ void loop() {
 }
 
 // Handling light mode
-void razer() {
+void razer(int squareNum) {
 
-  int *circleList = getSquare(1);
+  int *circleList = getSquare( squareNum );
   
-  for (int a = 1; a <= numLED; a++) {
+  int i, j;
 
-    if ( a < 11 ) caseId = 1;
-    else if ( a >= 11 && a < 21 ) caseId = 2;
-    else if ( a >= 21 && a < 31 ) caseId = 3;
-    else if ( a >= 31 && a < 41 ) caseId = 4;
-    else if ( a >= 41 && a < 51 ) caseId = 5;
+  float sectionColor = 64 / 6, unitColor = 255 / sectionColor;
+
+  for (int a = 1; a <= 64; a++) {
+
+    if ( a < sectionColor ) caseId = 1;
+    else if ( a < sectionColor * 2 ) caseId = 2;
+    else if ( a < sectionColor * 3 ) caseId = 3;
+    else if ( a < sectionColor * 4 ) caseId = 4;
+    else if ( a < sectionColor * 5 ) caseId = 5;
     else caseId = 6;
 
     switch ( caseId ) {
       case 1:
         r = 255;
-        g = g + 25.5;
+        g = g + unitColor;
         b = 0;
         break;
       case 2:
-        r = r - 25.5;
+        r = r - unitColor;
         g = 255;
         b = 0;
         break;
       case 3:
         r = 0;
         g = 255;
-        b = b + 25.5;
+        b = b + unitColor;
         break;
       case 4:
         r = 0;
-        g = g - 25.5;
+        g = g - unitColor;
         b = 255;
         break;
       case 5:
-        r = r + 25.5;
+        r = r + unitColor;
         g = 0;
         b = 255;
         break;
       case 6:
         r = 255;
         g = 0;
-        b = b - 25.5;
+        b = b - unitColor;
         break;
     }
 
@@ -138,17 +143,15 @@ void razer() {
 
     currentPointer = pointerId + a;
 
-    if ( currentPointer > numLED ) {
-      currentPointer = currentPointer - numLED;
+    if ( currentPointer > 64 ) {
+      currentPointer = currentPointer - 64;
     }
       
     strip.setPixelColor( circleList[currentPointer], r, g, b );
 
   }
 
-  pointerId++;
-  
-  if ( pointerId == numLED ) 
+  if ( ++pointerId == 64 ) 
     pointerId = 0;
 
 }
